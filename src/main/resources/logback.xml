@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+        %-5p %d{yyyy-MM-dd HH:mm:ss} [%40.40(%C{30}.%M:%3L)] %m%n
+      </Pattern>
+    </layout>
+  </appender>
+
+  <appender name="FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>iranja.log</File>
+    <Encoding>Windows-31J</Encoding>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <FileNamePattern>amazonchecker.%i.log.zip</FileNamePattern>
+      <MinIndex>1</MinIndex>
+      <MaxIndex>10</MaxIndex>
+    </rollingPolicy>
+    <triggeringPolicy
+      class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>3MB</MaxFileSize>
+    </triggeringPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+        %-5p %d{yyyy-MM-dd HH:mm:ss} [%40.40(%C{30}.%M:%3L)] %m%n
+      </Pattern>
+    </layout>
+  </appender>
+
+  <logger name="org.ouobpo.tools">
+    <level value="debug" />
+  </logger>
+
+  <root>
+    <level value="warn" />
+    <!-- <appender-ref ref="STDOUT" /> -->
+    <appender-ref ref="FILE" />
+  </root>
+
+</configuration>
