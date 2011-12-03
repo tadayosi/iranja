@@ -6,7 +6,7 @@
   <groupId>org.ouobpo.tools</groupId>
   <artifactId>iranja</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
 
   <name>Iranja</name>
   <url>http://github.com/tadayosi</url>
