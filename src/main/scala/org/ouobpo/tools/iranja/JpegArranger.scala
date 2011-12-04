@@ -14,6 +14,7 @@ import com.drew.metadata.exif.ExifDirectory
 object JpegArranger {
   private val logger = LoggerFactory.getLogger(getClass)
   private val currentDir = new File(".")
+  private val jpegFilter: FileFilter = new SuffixFileFilter(Array(".jpeg", ".jpg", ".JPEG", ".JPG"))
   def main(args: Array[String]) {
     logger.info("=== START =========================================")
     run
@@ -29,15 +30,10 @@ object JpegArranger {
     }
   }
 
-  private[iranja] def jpegFilesIn(rootDir: File) = {
-    val jpegFilter: FileFilter = new SuffixFileFilter(Array(".jpeg", ".jpg", ".JPEG", ".JPG"))
-    // root directory
-    val jpegs = rootDir.listFiles(jpegFilter)
-    // sub directories, searching only child level.
-    rootDir.listFiles(DirectoryFileFilter.DIRECTORY.asInstanceOf[FileFilter]).foldLeft(jpegs) {
+  private[iranja] def jpegFilesIn(rootDir: File) = rootDir.listFiles(jpegFilter) ++
+    rootDir.listFiles(DirectoryFileFilter.DIRECTORY.asInstanceOf[FileFilter]).foldLeft(List[File]()) {
       _ ++ _.listFiles(jpegFilter)
     }
-  }
 
   private[iranja] def arrange(jpeg: File) {
     logger.info(jpeg.toString)
