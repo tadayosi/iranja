@@ -9,7 +9,7 @@
   <version>1.1-SNAPSHOT</version>
 
   <name>Iranja</name>
-  <url>http://github.com/tadayosi</url>
+  <url>http://github.com/tadayosi/iranja</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -135,9 +135,9 @@
 
     <!-- ***** test ***** -->
     <dependency>
-      <groupId>org.scala-tools.testing</groupId>
-      <artifactId>specs_2.9.1</artifactId>
-      <version>1.6.9</version>
+      <groupId>org.specs2</groupId>
+      <artifactId>specs2_2.9.1</artifactId>
+      <version>1.6.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>

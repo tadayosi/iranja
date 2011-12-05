@@ -1,27 +1,30 @@
 package org.ouobpo.tools.iranja
 
+import org.specs2.mutable._
+import org.specs2.runner._
+import org.junit.runner._
+
 import java.io.File
-
 import org.apache.commons.lang.time.{ DateUtils, DateFormatUtils }
-import org.junit.runner.RunWith
-import org.specs.runner.JUnit
-import org.specs.runner.JUnitSuiteRunner
-import org.specs.Specification
 
-@RunWith(classOf[JUnitSuiteRunner])
-class JpegArrangerSpec extends Specification with JUnit {
+@RunWith(classOf[JUnitRunner])
+class JpegArrangerSpec extends Specification {
   "JpegArranger" should {
-    "collect jpeg files" in {
+    "sort jpeg files into date directories" in {
+      skipped
+    }
+
+    "collect jpeg files in current directory and its child directories" in {
       val result1 = JpegArranger.jpegFilesIn(new File("src/test/resources"))
-      result1.size must be equalTo 1
-      result1 must contain(new File("src/test/resources/sample.jpg"))
+      result1 must have size 1
+      result1 must be equalTo Array(new File("src/test/resources/sample.jpg"))
 
       val result2 = JpegArranger.jpegFilesIn(new File("src/test"))
-      result2.size must be equalTo 1
-      result2 must contain(new File("src/test/resources/sample.jpg"))
+      result2 must have size 1
+      result2 must be equalTo Array(new File("src/test/resources/sample.jpg"))
 
       val result3 = JpegArranger.jpegFilesIn(new File("src"))
-      result3 must beEmpty
+      result3 must be empty
     }
 
     "extract original date of jpeg file" in {
