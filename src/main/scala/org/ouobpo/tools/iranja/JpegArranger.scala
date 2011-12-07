@@ -13,19 +13,18 @@ import com.drew.metadata.exif.ExifDirectory
 
 object JpegArranger {
   private val logger = LoggerFactory.getLogger(getClass)
-  private val currentDir = new File(".")
   private val jpegFilter: FileFilter = new SuffixFileFilter(Array(".jpeg", ".jpg", ".JPEG", ".JPG"))
   def main(args: Array[String]) {
     logger.info("=== START =========================================")
-    run
+    run(new File(if (args.isEmpty) "." else args(0)))
     logger.info("=== END ===========================================")
   }
 
   //----------------------------------------------------------------------------
 
-  def run {
-    jpegFilesIn(currentDir) foreach { jpeg =>
-      try { arrange(jpeg) }
+  def run(rootDir: File) {
+    jpegFilesIn(rootDir) foreach { jpeg =>
+      try { arrange(rootDir, jpeg) }
       catch { case e => logger.error("failed to arrange jpeg '%s'".format(jpeg), e) }
     }
   }
@@ -35,9 +34,9 @@ object JpegArranger {
       _ ++ _.listFiles(jpegFilter)
     }
 
-  private[iranja] def arrange(jpeg: File) {
+  private[iranja] def arrange(rootDir: File, jpeg: File) {
     logger.info(jpeg.toString)
-    val toDir = directoryOf(originalDateOf(jpeg))
+    val toDir = directoryOf(rootDir, originalDateOf(jpeg))
     val destination = new File(toDir, jpeg.getName())
     if (destination.equals(jpeg)) {
       logger.info("-> jpeg already arranged."); return
@@ -54,5 +53,5 @@ object JpegArranger {
       Array("yyyy:MM:dd HH:mm:ss"))
   }
 
-  private[iranja] def directoryOf(date: Date) = new File(currentDir, DateFormatUtils.format(date, "yyyyMMdd"))
+  private[iranja] def directoryOf(rootDir: File, date: Date) = new File(rootDir, DateFormatUtils.format(date, "yyyyMMdd"))
 }
