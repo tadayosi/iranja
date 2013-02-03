@@ -18,10 +18,11 @@
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
-    <finalName>iranja-${version}</finalName>
+    <finalName>iranja-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -31,36 +32,44 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
           <archive>
             <manifest>
               <mainClass>
                 org.ouobpo.tools.iranja.JpegArranger
               </mainClass>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib</classpathPrefix>
+              <!--
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib</classpathPrefix>
+              -->
             </manifest>
           </archive>
         </configuration>
       </plugin>
-      <plugin>
+      <!--
+        <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.1</version>
         <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-          </execution>
+        <execution>
+        <phase>package</phase>
+        <goals>
+        <goal>copy-dependencies</goal>
+        </goals>
+        </execution>
         </executions>
         <configuration>
-          <includeScope>runtime</includeScope>
-          <outputDirectory>${project.build.directory}/lib</outputDirectory>
+        <includeScope>runtime</includeScope>
+        <outputDirectory>${project.build.directory}/lib</outputDirectory>
         </configuration>
-      </plugin>
+        </plugin>
+      -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.9</version>
         <configuration>
           <additionalProjectnatures>
             <projectnature>org.scala-ide.sdt.core.scalanature</projectnature>
@@ -73,6 +82,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.10</version>
         <configuration>
           <includes>
             <include>**/*Spec.java</include>
@@ -82,6 +92,47 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>
+                org.ouobpo.tools.iranja.JpegArranger
+              </mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
