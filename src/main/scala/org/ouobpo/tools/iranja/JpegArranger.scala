@@ -1,15 +1,17 @@
 package org.ouobpo.tools.iranja
 
-import java.io.{ FileInputStream, FileFilter, File }
+import java.io.{ File, FileFilter }
 import java.util.Date
 
-import org.apache.commons.io.filefilter.{ SuffixFileFilter, DirectoryFileFilter }
+import scala.Array.canBuildFrom
+
 import org.apache.commons.io.FileUtils
-import org.apache.commons.lang.time.{ DateUtils, DateFormatUtils }
+import org.apache.commons.io.filefilter.{ DirectoryFileFilter, SuffixFileFilter }
+import org.apache.commons.lang.time.{ DateFormatUtils, DateUtils }
 import org.slf4j.LoggerFactory
 
-import com.drew.imaging.jpeg.JpegMetadataReader
-import com.drew.metadata.exif.ExifDirectory
+import com.drew.imaging.ImageMetadataReader
+import com.drew.metadata.exif.ExifSubIFDDirectory
 
 object JpegArranger {
   private val logger = LoggerFactory.getLogger(getClass)
@@ -25,7 +27,7 @@ object JpegArranger {
   def run(rootDir: File) {
     jpegFilesIn(rootDir) foreach { jpeg =>
       try { arrange(rootDir, jpeg) }
-      catch { case e => logger.error("failed to arrange jpeg '%s'".format(jpeg), e) }
+      catch { case e: Throwable => logger.error("failed to arrange jpeg '%s'".format(jpeg), e) }
     }
   }
 
@@ -46,10 +48,10 @@ object JpegArranger {
   }
 
   private[iranja] def originalDateOf(jpeg: File) = {
-    val metadata = JpegMetadataReader.readMetadata(new FileInputStream(jpeg))
-    val exif = metadata.getDirectory(classOf[ExifDirectory])
+    val metadata = ImageMetadataReader.readMetadata(jpeg)
+    val exif = metadata.getDirectory(classOf[ExifSubIFDDirectory])
     DateUtils.parseDate(
-      exif.getDescription(ExifDirectory.TAG_DATETIME_ORIGINAL),
+      exif.getDescription(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL),
       Array("yyyy:MM:dd HH:mm:ss"))
   }
 
